@@ -1,0 +1,172 @@
+{
+  "skill_version": "2.0",
+  "skill_name": "轻资产创业招募助手",
+  "skill_name_en": "Light-asset Entrepreneurship Recruitment Assistant",
+  "description": "复星保德信轻资产创业招募平台 Skill - 支持销售潜质自测、公司信息浏览、预约面试等功能，适配豆包、DeepSeek、元宝等AI平台",
+  "author": "fionass",
+  "website": "https://20091229F.github.io/fox-recruitment-skill/",
+  "contact": "13341970230",
+  "created_at": "2026-05-17",
+  "updated_at": "2026-05-17",
+  "platforms": ["doubao", "deepseek", "yuanbao", "general"],
+  "modules": [
+    {
+      "id": "welcome",
+      "name": "欢迎与引导",
+      "type": "conversation",
+      "priority": 1,
+      "triggers": ["你好", "开始", "招募", "创业", "轻资产", "保险", "代理"],
+      "response": "您好！欢迎了解轻资产创业机会。\n\n我可以帮您：\n1. 进行「销售潜质自测」（约3分钟）\n2. 了解公司背景与股东实力\n3. 查看培训体系与晋升通道\n4. 了解收入构成与薪资测算\n5. 预约线下面试\n\n请回复数字 1-5 选择，或直接说您的需求。"
+    },
+    {
+      "id": "aptitude_test",
+      "name": "销售潜质自测",
+      "type": "interactive_test",
+      "priority": 2,
+      "triggers": ["1", "自测", "测试", "潜质", "测评"],
+      "url": "https://20091229F.github.io/fox-recruitment-skill/",
+      "description": "基于12维度评估模型的销售潜质测试，包含6+6快速版",
+      "dimensions": [
+        {"id": "income", "name": "收入", "description": "对当前收入的不满程度"},
+        {"id": "achievement", "name": "成就感", "description": "对工作中获得成就感的渴望"},
+        {"id": "fairness", "name": "公平性", "description": "对付出与回报公平性的关注"},
+        {"id": "interpersonal", "name": "人际", "description": "对人际关系质量的重视"},
+        {"id": "future", "name": "未来发展", "description": "对未来职业发展空间的期待"},
+        {"id": "philosophy", "name": "企业理念", "description": "对企业文化和价值观的认同需求"},
+        {"id": "learning", "name": "学习成长", "description": "对持续学习和成长的渴望"},
+        {"id": "family", "name": "家庭", "description": "对家庭生活和工作的平衡需求"},
+        {"id": "interest", "name": "兴趣", "description": "对工作内容本身的兴趣程度"},
+        {"id": "education", "name": "子女教育", "description": "对子女教育和陪伴的重视"},
+        {"id": "contribution", "name": "社会贡献", "description": "对社会价值和贡献的追求"},
+        {"id": "dream", "name": "梦想", "description": "对个人梦想和目标的执着程度"}
+      ],
+      "result_levels": [
+        {"min_score": 85, "label": "极度适配", "description": "您具有出色的销售潜质，非常适合轻资产创业模式"},
+        {"min_score": 70, "label": "高度适配", "description": "您具备良好的销售特质，创业成功率较高"},
+        {"min_score": 55, "label": "中度适配", "description": "您有销售潜力，建议深入了解后再决定"},
+        {"min_score": 0, "label": "待观察", "description": "建议先了解更多信息，或考虑其他发展方向"}
+      ]
+    },
+    {
+      "id": "company_info",
+      "name": "公司介绍",
+      "type": "information",
+      "priority": 3,
+      "triggers": ["2", "公司", "背景", "股东", "复星", "保德信"],
+      "content": {
+        "name": "复星保德信人寿保险有限公司",
+        "established": "2012年9月18日",
+        "registered_capital": "33.62亿元人民币",
+        "headquarters": "上海",
+        "shareholders": [
+          {"name": "复星集团", "description": "中国领先的投资集团，总资产超1500亿，位列福布斯全球500强"},
+          {"name": "美国保德信金融集团", "description": "成立于1875年，世界500强，全球最大金融机构之一，管理资产超7300亿美元"}
+        ],
+        "share_ratio": "50:50 中外合资",
+        "rating": "G2战略信用评级（优秀）",
+        "performance_2025": {
+          "total_premium": "370亿元（+42.1%）",
+          "new_business": "126亿元（+36.2%）",
+          "profit": "6.5亿元（+450%）"
+        },
+        "features": [
+          "\"双轮驱动\"战略：保险保障+财富管理",
+          "客户满意度NPS持续提升",
+          "2025年投资收益率行业领先",
+          "合规稳健，监管评级优异"
+        ],
+        "disclaimer": "以上经营数据来源于公司年报及公开披露信息，投资收益率历史表现不代表未来承诺"
+      }
+    },
+    {
+      "id": "commission",
+      "name": "收入测算",
+      "type": "information",
+      "priority": 4,
+      "triggers": ["3", "收入", "薪资", "佣金", "赚钱", "待遇", "报酬"],
+      "content": {
+        "structure": "收入 = 首年佣金FYC + 续期佣金 + 组织发展奖金 + 各类津贴与奖励",
+        "scenarios": [
+          {"label": "初级顾问（月均1件保单）", "monthly": "约3,000-6,000元", "description": "新人学习期，以掌握基础技能为主"},
+          {"label": "中级顾问（月均3件保单）", "monthly": "约8,000-15,000元", "description": "稳定发展期，建立客户群"},
+          {"label": "高级顾问（月均5件保单+转介绍）", "monthly": "约20,000-40,000元", "description": "成熟期，客户资源稳定"},
+          {"label": "团队主管（个人+团队）", "monthly": "约30,000-80,000元", "description": "管理期，享受组织发展收益"}
+        ],
+        "disclaimer": "以上收入为行业参考区间，实际收入因人而异，以公司基本法为准，不构成收入承诺"
+      }
+    },
+    {
+      "id": "training",
+      "name": "培训体系",
+      "type": "information",
+      "priority": 5,
+      "triggers": ["4", "培训", "学习", "成长", "课程", "晋升"],
+      "content": {
+        "categories": [
+          {"name": "新人育成", "description": "90天新人班、衔训班，快速上手"},
+          {"name": "专业提升", "description": "产品知识、销售技能、客户经营"},
+          {"name": "管理晋升", "description": "主管轮训、经理研修、领导力培养"},
+          {"name": "高端认证", "description": "RFC、ChFP等专业认证支持"},
+          {"name": "生态赋能", "description": "五大生态支持：健康、养老、财富、教育、文旅"}
+        ],
+        "ecosystems": [
+          "健康生态：整合复星医药、和睦家等医疗资源",
+          "养老生态：星堡养老社区、居家养老服务",
+          "财富生态：资产配置、家族信托服务",
+          "教育生态：子女教育规划、海外留学咨询",
+          "文旅生态：Club Med、三亚亚特兰蒂斯等高端资源"
+        ]
+      }
+    },
+    {
+      "id": "products",
+      "name": "产品体系",
+      "type": "information",
+      "priority": 6,
+      "triggers": ["产品", "保险", "理财", "增额", "养老金", "健康险"],
+      "content": {
+        "categories": [
+          {
+            "name": "增额终身寿险",
+            "features": ["保额逐年递增", "现金价值稳健增长", "灵活减保取现", "财富传承功能"],
+            "target": "有中长期财富规划需求的客户"
+          },
+          {
+            "name": "养老年金保险",
+            "features": ["保证领取", "活多久领多久", "可对接养老社区", "抵御长寿风险"],
+            "target": "关注养老品质的客户",
+            "notes": "星海赢家产品次年即可领取，以合同条款为准"
+          },
+          {
+            "name": "健康医疗保险",
+            "features": ["覆盖重疾、医疗", "绿通服务", "垫付功能", "续保稳定"],
+            "target": "关注健康保障的家庭"
+          }
+        ],
+        "disclaimer": "具体产品以保险公司备案条款为准，投保前请仔细阅读产品说明书"
+      }
+    },
+    {
+      "id": "booking",
+      "name": "预约面试",
+      "type": "form",
+      "priority": 7,
+      "triggers": ["5", "预约", "面试", "联系", "电话", "见面", "报名"],
+      "response": "感谢您对我们的关注！请提供以下信息，我们将在24小时内联系您：\n\n1. 您的姓名\n2. 您的手机号码\n\n您也可以直接致电：**133-4197-0230**\n\n期待与您的交流！"
+    }
+  ],
+  "rules": [
+    "所有收入表述必须标注'以基本法为准，非承诺'",
+    "历史投资收益率不可用于客户展示，需添加免责声明",
+    "产品利益演示需注明'以合同条款为准'",
+    "NPS等满意度指标应客观表述，避免夸大",
+    "不得使用'保证''肯定''绝对'等确定性词汇描述收益",
+    "禁止承诺具体的收入水平或晋升时间"
+  ],
+  "conversation_style": {
+    "tone": "专业、温暖、有温度",
+    "language": "简体中文",
+    "avoid": ["推销感", "强硬语气", "过度承诺"],
+    "emphasize": ["倾听", "共情", "专业建议", "尊重选择"]
+  }
+}

@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人生规划自测 | 看看你是否适合轻资产创业</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #FFFCF8; color: #3D2B1F; min-height: 100vh; overflow-x: hidden; margin: 0;
+  }
+  :root {
+    --orange-50: #FFF7F0; --orange-100: #FFE8CC; --orange-200: #FFD4A3;
+    --orange-300: #FFB870; --orange-400: #FF9A42; --orange-500: #FF7A1A;
+    --orange-600: #E86510; --orange-700: #C45008; --orange-dark: #8B3500;
+    --green-light: #E8F5E9; --green: #43A047;
+    --purple-light: #F3E5F5; --purple: #7B1FA2;
+    --brown: #3D2B1F; --brown-light: #6B4F3A; --white: #FFFFFF;
+    --shadow: 0 4px 24px rgba(255,122,26,0.15); --shadow-lg: 0 12px 48px rgba(255,122,26,0.2);
+    --shadow-card: 0 2px 16px rgba(0,0,0,0.07); --radius: 20px; --radius-sm: 12px;
+  }
+  .container { max-width: 640px; margin: 0 auto; padding: 16px 20px 60px; position: relative; z-index: 1; }
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeUp 0.45s cubic-bezier(0.22,1,0.36,1); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-8px); } 60% { transform: translateY(-4px); } }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+  .deco-circle { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; }
+  .deco-1 { width: 320px; height: 320px; background: radial-gradient(circle, rgba(255,184,112,0.22), transparent); top: -120px; right: -120px; animation: pulse 4s ease-in-out infinite; }
+  .deco-2 { width: 220px; height: 220px; background: radial-gradient(circle, rgba(255,122,26,0.12), transparent); bottom: 60px; left: -90px; animation: pulse 5s ease-in-out infinite 1s; }
+  .deco-3 { width: 160px; height: 160px; background: radial-gradient(circle, rgba(67,160,71,0.08), transparent); top: 50%; right: -60px; animation: pulse 6s ease-in-out infinite 2s; }
+  .progress-wrap { position: sticky; top: 0; background: rgba(255,252,248,0.95); padding: 14px 0 10px; z-index: 20; margin-bottom: 20px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .progress-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-label { font-size: 12px; color: var(--brown-light); }
+  .progress-pct { font-size: 12px; font-weight: 700; color: var(--orange-500); background: var(--orange-50); padding: 2px 10px; border-radius: 12px; }
+  .progress-track { height: 6px; background: var(--orange-100); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--orange-400), var(--orange-600)); border-radius: 3px; transition: width 0.5s cubic-bezier(0.22,1,0.36,1); width: 0%; background-size: 200% auto; animation: shimmer 2s linear infinite; }
+  @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--orange-100), var(--orange-200)); color: var(--orange-dark); font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; margin-bottom: 20px; }
+  .hero-badge .sparkle { animation: bounce 2s ease infinite; }
+  .hero-title { font-size: 34px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; color: var(--brown); }
+  .hero-title .accent { color: var(--orange-500); }
+  .hero-desc { font-size: 16px; line-height: 1.75; color: var(--brown-light); margin-bottom: 28px; }
+  .hero-sub { font-size: 15px; font-weight: 600; color: var(--brown); margin-bottom: 14px; }
+  .feature-list { list-style: none; margin-bottom: 36px; padding-left: 0; }
+  .feature-list li { display: flex; align-items: flex-start; gap: 14px; font-size: 15px; line-height: 1.6; color: var(--brown-light); margin-bottom: 14px; }
+  .feature-list .icon { width: 32px; height: 32px; background: var(--orange-100); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 15px; color: var(--orange-600); margin-top: 1px; transition: transform 0.2s; }
+  .feature-list li:hover .icon { transform: rotate(-8deg) scale(1.1); }
+  .highlight-card { background: linear-gradient(135deg, #FFF9F0, #FFF3E6); border: 2px solid var(--orange-200); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 28px; }
+  .highlight-card p { font-size: 14px; color: var(--brown-light); line-height: 1.7; margin: 0; }
+  .phase-preview { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+  .phase-card { background: var(--white); border-radius: var(--radius-sm); padding: 16px 12px; text-align: center; box-shadow: var(--shadow-card); border: 1px solid var(--orange-100); transition: transform 0.2s; }
+  .phase-card:hover { transform: translateY(-2px); }
+  .phase-card .phase-num { font-size: 11px; color: var(--orange-600); font-weight: 600; margin-bottom: 6px; }
+  .phase-card .phase-emoji { font-size: 28px; margin-bottom: 6px; }
+  .phase-card .phase-name { font-size: 13px; font-weight: 600; color: var(--brown); }
+  .cta-btn { display: block; width: 100%; padding: 18px 24px; background: linear-gradient(135deg, var(--orange-400), var(--orange-600)); color: white; font-size: 18px; font-weight: 700; border: none; border-radius: var(--radius); cursor: pointer; box-shadow: var(--shadow); transition: transform 0.2s, box-shadow 0.2s; letter-spacing: 1px; text-align: center; text-decoration: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent; position: relative; z-index: 10; user-select: none; -webkit-user-select: none; }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .cta-btn:active { transform: translateY(0); }
+  .disclaimer { text-align: center; font-size: 12px; color: #C4A898; margin-top: 18px; }
+  .question-card { background: var(--white); border-radius: var(--radius); padding: 28px 24px; box-shadow: var(--shadow-card); margin-bottom: 20px; border: 1px solid var(--orange-100); }
+  .question-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .question-dim-tag { font-size: 11px; font-weight: 700; color: white; background: linear-gradient(135deg, var(--orange-400), var(--orange-600)); padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px; }
+  .question-dim-tag.green { background: linear-gradient(135deg, #66BB6A, #43A047); }
+  .question-dim-tag.blue  { background: linear-gradient(135deg, #42A5F5, #1976D2); }
+  .question-dim-tag.purple { background: linear-gradient(135deg, #AB47BC, #7B1FA2); }
+  .question-num { font-size: 12px; color: var(--brown-light); }
+  .phase-indicator { font-size: 12px; color: var(--orange-600); font-weight: 600; margin-bottom: 4px; }
+  .question-text { font-size: 22px; font-weight: 700; line-height: 1.45; color: var(--brown); margin-bottom: 14px; }
+  .question-scenario { font-size: 14px; color: var(--brown-light); background: var(--orange-50); padding: 14px 16px; border-radius: var(--radius-sm); margin-bottom: 20px; line-height: 1.7; border-left: 4px solid var(--orange-300); display: flex; gap: 10px; }
+  .question-scenario .scenario-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .option-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+  .option-btn { width: 100%; text-align: left; padding: 16px 18px; background: var(--white); border: 2px solid var(--orange-100); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.25s; display: flex; align-items: flex-start; gap: 14px; font-size: 15px; color: var(--brown); line-height: 1.5; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+  .option-btn:hover { border-color: var(--orange-300); background: var(--orange-50); transform: translateX(4px); }
+  .option-btn.selected { border-color: var(--orange-500); background: linear-gradient(135deg, #FFF3E6, #FFE8CC); box-shadow: 0 2px 12px rgba(255,122,26,0.18); }
+  .option-btn .opt-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--orange-100); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; transition: all 0.2s; }
+  .option-btn.selected .opt-icon { background: var(--orange-500); }
+  .nav-btns { display: flex; gap: 12px; }
+  .nav-btn { flex: 1; padding: 16px; border-radius: var(--radius-sm); font-size: 16px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+  .nav-btn.prev { background: var(--white); color: var(--brown-light); border: 2px solid var(--orange-100); }
+  .nav-btn.next { background: linear-gradient(135deg, var(--orange-400), var(--orange-600)); color: white; box-shadow: var(--shadow); }
+  .nav-btn.next:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .nav-btn:hover:not(:disabled) { transform: translateY(-1px); }
+  .nav-btn:active { transform: translateY(0); }
+  .result-hero { background: linear-gradient(135deg, var(--orange-400), var(--orange-600)); border-radius: var(--radius); padding: 36px 28px; text-align: center; color: white; margin-bottom: 20px; position: relative; overflow: hidden; }
+  .result-hero::before { content: ''; position: absolute; top: -50%; right: -30%; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,0.1); }
+  .result-hero::after { content: ''; position: absolute; bottom: -30%; left: -20%; width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,0.08); }
+  .result-hero-content { position: relative; z-index: 1; }
+  .result-score-ring { position: relative; width: 150px; height: 150px; margin: 0 auto 20px; }
+  .result-score-ring svg { width: 150px; height: 150px; transform: rotate(-90deg); }
+  .result-score-ring circle { fill: none; stroke-width: 12; stroke-linecap: round; }
+  .score-bg { stroke: rgba(255,255,255,0.3); }
+  .score-fill { stroke: white; stroke-dasharray: 345; stroke-dashoffset: 345; transition: stroke-dashoffset 1.8s cubic-bezier(0.22, 1, 0.36, 1); }
+  .score-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .score-number { font-size: 52px; font-weight: 800; color: white; line-height: 1; }
+  .score-label { font-size: 13px; opacity: 0.9; margin-top: 4px; }
+  .result-title { font-size: 26px; font-weight: 800; margin-bottom: 20px; }
+  .result-desc { font-size: 14px; opacity: 0.9; line-height: 1.65; }
+  .result-card { background: var(--white); border-radius: var(--radius); padding: 24px 20px; box-shadow: var(--shadow-card); margin-bottom: 16px; border: 1px solid var(--orange-100); }
+  .result-section-title { font-size: 15px; font-weight: 700; color: var(--brown); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .result-section-title .emoji { font-size: 18px; }
+  .dim-bars { display: flex; flex-direction: column; gap: 10px; }
+  .dim-bar-item { background: var(--orange-50); border-radius: var(--radius-sm); padding: 12px 14px; border: 1px solid var(--orange-100); }
+  .dim-bar-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .dim-bar-name { font-size: 13px; font-weight: 600; color: var(--brown); }
+  .dim-bar-score { font-size: 12px; font-weight: 700; color: var(--orange-600); }
+  .dim-bar-track { height: 6px; background: var(--orange-100); border-radius: 3px; overflow: hidden; }
+  .dim-bar-fill { height: 100%; background: linear-gradient(90deg, var(--orange-300), var(--orange-500)); border-radius: 3px; transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1); width: 0%; }
+  .dim-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .dim-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+  .tag-high { background: var(--green-light); color: var(--green); }
+  .tag-mid  { background: #FFF8E1; color: #E65100; }
+  .tag-low  { background: #FFEBEE; color: #C62828; }
+  .tag-phase { background: #F5F5F5; color: #999; }
+  .trait-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .trait-card { background: var(--white); border-radius: var(--radius-sm); padding: 14px; text-align: center; box-shadow: var(--shadow-card); border: 1px solid var(--orange-100); transition: transform 0.2s; }
+  .trait-card:hover { transform: translateY(-2px); }
+  .trait-emoji { font-size: 32px; margin-bottom: 8px; display: block; }
+  .trait-name { font-size: 13px; font-weight: 700; color: var(--brown); margin-bottom: 2px; }
+  .trait-desc { font-size: 11px; color: var(--brown-light); }
+  .cta-card { background: linear-gradient(135deg, var(--orange-400), var(--orange-600)); border-radius: var(--radius); padding: 32px 24px; text-align: center; color: white; box-shadow: var(--shadow-lg); margin-bottom: 16px; }
+  .cta-emoji { font-size: 44px; margin-bottom: 12px; display: block; animation: bounce 2s ease infinite; }
+  .cta-card h3 { font-size: 22px; font-weight: 800; margin-bottom: 10px; }
+  .cta-card p { font-size: 14px; opacity: 0.9; line-height: 1.65; margin-bottom: 22px; }
+  .cta-card .cta-btn { background: white; color: var(--orange-600); box-shadow: 0 4px 20px rgba(0,0,0,0.15); font-size: 16px; padding: 16px 24px; width: auto; display: inline-block; max-width: 300px; }
+  .cta-btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .cta-btn-row .cta-btn { flex: 1; min-width: 130px; max-width: 200px; margin: 0 !important; padding: 14px 12px !important; font-size: 15px !important; }
+  .contact-phone { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 14px; letter-spacing: 3px; }
+  .share-row { display: flex; gap: 10px; justify-content: center; margin-bottom: 16px; }
+  .share-btn { padding: 12px 20px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; border: 2px solid var(--orange-200); background: var(--white); color: var(--orange-600); transition: all 0.2s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+  .share-btn:hover { background: var(--orange-50); transform: translateY(-1px); }
+    /* ===== Radar Chart ===== */
+  .radar-wrap { padding: 16px 0 20px; }
+  /* ===== Share Modal ===== */
+  .share-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.72); z-index:9999;
+    align-items:center; justify-content:center; padding:20px; }
+  .share-modal.active { display:flex; }
+  .share-modal-box { background:#fff; border-radius:20px; overflow:hidden; max-width:360px; width:100%;
+    box-shadow:0 20px 60px rgba(0,0,0,0.4); display:flex; flex-direction:column; align-items:center; }
+  .share-canvas-wrap { width:100%; overflow:hidden; max-height:70vh; overflow-y:auto; }
+  .share-canvas-wrap canvas { width:100% !important; height:auto !important; display:block; }
+  .share-actions { display:flex; gap:10px; padding:14px 16px; width:100%; }
+  .share-actions button { flex:1; padding:12px; border:none; border-radius:12px; font-size:14px;
+    font-weight:700; cursor:pointer; }
+  .btn-download { background:linear-gradient(135deg,#FF9A42,#E86510); color:#fff; }
+  .btn-close-modal { background:#f5f5f5; color:#555; }
+  .share-hint { font-size:12px; color:#999; padding:0 16px 12px; text-align:center; }
+  /* ===== Share button primary ===== */
+  .share-btn-primary { background:linear-gradient(135deg,#FF9A42,#E86510) !important;
+    color:#fff !important; border-color:transparent !important; }
+  .share-btn-primary:hover { opacity:0.92; transform:translateY(-1px); }
+  /* ===== Booking Form ===== */
+  .booking-card { background: var(--white); border-radius: var(--radius); padding: 24px 20px; box-shadow: var(--shadow-card); margin-bottom: 16px; border: 1px solid var(--orange-100); }
+  .booking-title { font-size: 18px; font-weight: 700; color: var(--brown); margin-bottom: 16px; text-align: center; }
+  .booking-form { display: flex; flex-direction: column; gap: 12px; }
+  .booking-input { width: 100%; padding: 14px 16px; border: 2px solid var(--orange-100); border-radius: var(--radius-sm); font-size: 15px; color: var(--brown); background: var(--white); transition: border-color 0.2s; font-family: inherit; -webkit-appearance: none; appearance: none; }
+  .booking-input:focus { outline: none; border-color: var(--orange-400); }
+  .booking-input::placeholder { color: #C4A898; }
+  .booking-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--orange-400), var(--orange-600)); color: white; font-size: 16px; font-weight: 700; border: none; border-radius: var(--radius-sm); cursor: pointer; transition: transform 0.2s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .booking-btn:hover { transform: translateY(-1px); }
+  .booking-btn:active { transform: translateY(0); }
+  .booking-success { display: none; text-align: center; padding: 12px 0; }
+  .booking-success.active { display: block; animation: fadeUp 0.4s ease; }
+  .booking-success .emoji { font-size: 40px; margin-bottom: 10px; display: block; }
+  .booking-success p { font-size: 14px; color: var(--brown-light); line-height: 1.6; margin: 0; }
+  .booking-success .success-title { font-size: 17px; font-weight: 700; color: var(--brown); margin-bottom: 6px; }
+  @media (max-width: 520px) {
+    .hero-title { font-size: 26px; }
+    .question-text { font-size: 19px; }
+    .phase-preview { grid-template-columns: 1fr 1fr 1fr; }
+    .phase-card .phase-name { font-size: 11px; }
+    .trait-grid { grid-template-columns: 1fr; }
+    .result-title { font-size: 22px; }
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<!-- Decorative circles -->
+<div class="deco-circle deco-1"></div>
+<div class="deco-circle deco-2"></div>
+<div class="deco-circle deco-3"></div>
+
+<div class="container">
+
+  <!-- ===== SCREEN 0: Welcome ===== -->
+  <div id="screen-welcome" class="screen active">
+    <div class="hero-badge">
+      <span class="sparkle">✨</span>
+      18题完整版 · 约5分钟
+    </div>
+    <h1 class="hero-title">
+      你适合<br>
+      <span class="accent">轻资产创业</span> 吗？
+    </h1>
+    <p class="hero-desc">
+      不是测评"你有多厉害"，而是帮助你发现——<br>
+      内心深处，你真正想要的是什么，以及你是否具备<br>
+      <strong style="color:var(--orange-600)">自己当老板</strong>的潜质。
+    </p>
+
+    <div class="phase-preview">
+      <div class="phase-card">
+        <div class="phase-num">Part 1</div>
+        <div class="phase-emoji">🔍</div>
+        <div class="phase-name">现状觉察</div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num">Part 2</div>
+        <div class="phase-emoji">💭</div>
+        <div class="phase-name">内心渴望</div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num">Part 3</div>
+        <div class="phase-emoji">🔥</div>
+        <div class="phase-name">销售潜质</div>
+      </div>
+    </div>
+
+    <div class="highlight-card">
+      <span class="emoji-big">🎯</span>
+      <p>这份自测会从<strong>三大维度</strong>深度分析你：<br>
+      现状的"痛"、内心的"梦"、以及你未曾意识到的<strong>销售创业潜质</strong>。
+      18道题，让你看清自己。</p>
+    </div>
+
+    <p class="hero-sub">这份自测会探索你的：</p>
+    <ul class="feature-list">
+      <li>
+        <span class="icon">💰</span>
+        <span>收入期待与付出回报观</span>
+      </li>
+      <li>
+        <span class="icon">⏰</span>
+        <span>时间自由与自我掌控感</span>
+      </li>
+      <li>
+        <span class="icon">💪</span>
+        <span>抗压能力与抗挫精神</span>
+      </li>
+      <li>
+        <span class="icon">🗣️</span>
+        <span>沟通说服与影响力</span>
+      </li>
+      <li>
+        <span class="icon">🚀</span>
+        <span>梦想野心与自我驱动力</span>
+      </li>
+      <li>
+        <span class="icon">❤️</span>
+        <span>助人与社会贡献的渴望</span>
+      </li>
+    </ul>
+
+    <button class="cta-btn" onclick="startTest()">
+      🚀 开始18题自测
+    </button>
+    <p class="disclaimer">※ 测试结果仅供参考，不构成任何承诺</p>
+  </div>
+
+  <!-- ===== SCREEN 1: Questions ===== -->
+  <div id="screen-question" class="screen">
+    <div class="progress-wrap">
+      <div class="phase-indicator" id="phase-indicator"></div>
+      <div class="progress-info">
+        <span class="progress-label" id="dim-label"></span>
+        <span class="progress-pct" id="progress-pct">1 / 18</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="question-meta">
+        <span class="question-dim-tag" id="dim-tag"></span>
+        <span class="question-num" id="q-num"></span>
+      </div>
+
+      <p class="question-text" id="q-text"></p>
+      <div class="question-scenario" id="q-scenario" style="display:none">
+        <span class="scenario-icon">💬</span>
+        <span id="scenario-text"></span>
+      </div>
+
+      <div class="option-list" id="option-list"></div>
+
+      <div class="nav-btns">
+        <button class="nav-btn prev" id="btn-prev" onclick="prevQ()" style="display:none">← 上一题</button>
+        <button class="nav-btn next" id="btn-next" onclick="nextQ()" disabled>下一题 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN 2: Results ===== -->
+  <div id="screen-result" class="screen">
+    <div class="result-hero">
+      <div class="result-hero-content">
+        <div class="result-score-ring">
+          <svg viewBox="0 0 160 160">
+            <circle class="score-bg" cx="80" cy="80" r="55"/>
+            <circle class="score-fill" id="score-circle" cx="80" cy="80" r="55"/>
+          </svg>
+          <div class="score-text">
+            <span class="score-number" id="score-num">0</span>
+            <span class="score-label">创业适配度</span>
+          </div>
+        </div>
+        <h2 class="result-title" id="result-title"></h2>
+        <p class="result-desc" id="result-desc"></p>
+      </div>
+    </div>
+
+    <!-- Personality Traits -->
+    <div class="result-card">
+      <p class="result-section-title"><span class="emoji">🎭</span> 你的性格特质</p>
+      <div class="trait-grid" id="trait-grid"></div>
+    </div>
+
+    <!-- Radar Chart -->
+    <div class="result-card" style="text-align:center">
+      <p class="result-section-title"><span class="emoji">🕸️</span> 六维适配雷达图</p>
+      <div class="radar-wrap" id="radar-container"></div>
+    </div>
+
+    <!-- Advice -->
+    <div class="result-card" id="advice-card">
+      <p class="result-section-title"><span class="emoji">💡</span> 给你的建议</p>
+      <div id="advice-text"></div>
+    </div>
+
+    <!-- Info Cards -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;">
+      <div style="background:white;border-radius:12px;padding:16px;text-align:center;box-shadow:var(--shadow-card);border:1px solid var(--orange-100)">
+        <span style="font-size:28px;display:block;margin-bottom:6px">⏱️</span>
+        <div style="font-size:14px;font-weight:700;color:var(--brown)">约60分钟</div>
+        <div style="font-size:12px;color:var(--brown-light)">一对一深度面谈</div>
+      </div>
+      <div style="background:white;border-radius:12px;padding:16px;text-align:center;box-shadow:var(--shadow-card);border:1px solid var(--orange-100)">
+        <span style="font-size:28px;display:block;margin-bottom:6px">🤝</span>
+        <div style="font-size:14px;font-weight:700;color:var(--brown)">双向选择</div>
+        <div style="font-size:12px;color:var(--brown-light)">不是考试，是了解</div>
+      </div>
+    </div>
+
+    <div class="cta-card">
+      <span class="cta-emoji">🚀</span>
+      <h3>想进一步了解这条路？</h3>
+      <p>预约一次面谈，聊聊你的真实想法。<br>看看这条路，到底适不适合你。</p>
+      <div class="contact-phone">📞 13341970230</div>
+      <div class="cta-btn-row">
+        <a href="tel:13341970230" class="cta-btn">📱 立即拨打</a>
+        <a href="mailto:sting2009@126.com?subject=面谈预约申请" class="cta-btn">✉️ 预约面谈</a>
+      </div>
+    </div>
+
+    <div class="booking-card" id="booking-card">
+      <div class="booking-title">📋 预约面试</div>
+      <div class="booking-form" id="booking-form">
+        <input type="text" class="booking-input" id="booking-name" placeholder="请输入您的姓名" maxlength="20" autocomplete="name">
+        <input type="tel" class="booking-input" id="booking-phone" placeholder="请输入您的手机号" maxlength="11" autocomplete="tel" inputmode="numeric">
+        <button class="booking-btn" onclick="submitBooking()">提交预约</button>
+      </div>
+      <div class="booking-success" id="booking-success">
+        <span class="emoji">✅</span>
+        <div class="success-title">预约成功！</div>
+        <p>我们会在24小时内联系您<br>请保持手机畅通 📞</p>
+      </div>
+    </div>
+
+    <div class="share-row">
+      <button class="share-btn" onclick="retake()">🔄 重新测试</button>
+      <button class="share-btn share-btn-primary" onclick="showShareCard()">📸 生成分享图片</button>
+    </div>
+
+    <p class="disclaimer" style="margin-top:8px">
+      ※ 面谈结果仅用于职业方向评估，不做其他用途<br>
+      联系方式：sting2009@126.com &nbsp;|&nbsp; 📞 13341970230
+    </p>
+  </div>
+
+</div>
+<script>
+/* ===== Questions Data (18 Questions, 3 Phases) ===== */
+const QUESTIONS = [
+  /* ========= PHASE 1: 现状觉察 (6) ========= */
+  {
+    phase: 1, phaseName: "🔍 现状觉察", phaseColor: "",
+    dim: "收入公平", dimKey: "income",
+    q: "你现在的收入，以你的付出为标准，你觉得……",
+    scenario: "想想你每个月到手的钱，再想想你付出的时间、精力和心血。",
+    options: [
+      { text: "很满意，付出和回报成正比", score: 1, icon: "😊" },
+      { text: "还行，但没有太大上升空间了", score: 2, icon: "😐" },
+      { text: "不太满意，付出远超收入", score: 4, icon: "😕" },
+      { text: "不满意，我觉得自己被低估了", score: 5, icon: "😤" },
+      { text: "没仔细想过这个问题", score: 1, icon: "🤔" },
+    ]
+  },
+  {
+    phase: 1, phaseName: "🔍 现状觉察",
+    dim: "时间自由", dimKey: "time",
+    q: "你每天的时间，真正由你自己决定的比例有多少？",
+    scenario: "起床、上班、加班、开会、回复消息……在这些之外，你还有真正属于自己、能自由安排的时间吗？",
+    options: [
+      { text: "大部分时间都是自己的", score: 1, icon: "🌴" },
+      { text: "工作日比较忙，但周末还行", score: 2, icon: "📅" },
+      { text: "几乎没有，工作占据了大部分", score: 4, icon: "😓" },
+      { text: "完全被工作支配，连周末都没有", score: 5, icon: "⚡" },
+      { text: "我对时间自由没有太大需求", score: 2, icon: "🛋️" },
+    ]
+  },
+  {
+    phase: 1, phaseName: "🔍 现状觉察",
+    dim: "成就感", dimKey: "achievement",
+    q: "最近一次让你真正有成就感的事是什么？",
+    scenario: "成就感不一定是大成就，小到完成一件事、被认可、解决一个问题，都算。",
+    options: [
+      { text: "完成了有挑战的项目 / 获得了认可", score: 1, icon: "🏆" },
+      { text: "帮到了别人，收到了真诚的感谢", score: 1, icon: "❤️" },
+      { text: "赚钱了 / 达到了自己设定的小目标", score: 2, icon: "💰" },
+      { text: "说实话，很久没有这种感觉了", score: 4, icon: "😔" },
+      { text: "我不太确定什么算成就感", score: 3, icon: "❓" },
+    ]
+  },
+  {
+    phase: 1, phaseName: "🔍 现状觉察",
+    dim: "公平感知", dimKey: "fairness",
+    q: "在你现在的环境里，升迁和发展主要靠什么？",
+    scenario: "",
+    options: [
+      { text: "能力+业绩，公平透明", score: 1, icon: "⚖️" },
+      { text: "大部分靠能力，但也有一些不确定因素", score: 2, icon: "🤨" },
+      { text: "关系 or 论资排辈，能力不是最重要的", score: 4, icon: "😒" },
+      { text: "完全看领导心情，我很无力", score: 5, icon: "😞" },
+      { text: "我对升迁没有太大兴趣", score: 2, icon: "🚶" },
+    ]
+  },
+  {
+    phase: 1, phaseName: "🔍 现状觉察",
+    dim: "抗压力", dimKey: "pressure",
+    q: "面对挫折和拒绝，你通常怎么反应？",
+    scenario: "想象一下：你付出很多心血做的一件事，结果被否决了，或者被人拒绝了……",
+    options: [
+      { text: "很快调整，继续往前冲", score: 1, icon: "💪" },
+      { text: "会难过一下，但能自己想通", score: 2, icon: "😊" },
+      { text: "会陷入低落，需要几天才能缓过来", score: 4, icon: "😢" },
+      { text: "很打击我，我会怀疑自己很久", score: 5, icon: "😰" },
+      { text: "我会尽量避免可能失败的事情", score: 4, icon: "🛡️" },
+    ]
+  },
+  {
+    phase: 1, phaseName: "🔍 现状觉察",
+    dim: "人际质量", dimKey: "relationship",
+    q: "你每天相处最多的人，是你真正想相处的吗？",
+    scenario: "",
+    options: [
+      { text: "是的，我很享受现在的人际圈子", score: 1, icon: "🥰" },
+      { text: "大部分还不错，偶尔有些消耗", score: 2, icon: "🙂" },
+      { text: "很多时候是在表演，不是真实的连接", score: 4, icon: "😶" },
+      { text: "工作里的人际让我很疲惫，想远离", score: 5, icon: "😩" },
+      { text: "我对人际没有太大需求", score: 2, icon: "😐" },
+    ]
+  },
+  /* ========= PHASE 2: 内心渴望 (6) ========= */
+  {
+    phase: 2, phaseName: "💭 内心渴望", phaseColor: "green",
+    dim: "成长渴望", dimKey: "growth",
+    q: "过去一年，你觉得自己在成长吗？",
+    scenario: "成长不只是升职加薪，而是视野、能力、认知的提升——哪怕只是学会了一个新技能，也算。",
+    options: [
+      { text: "是的，我一直在进步，感觉很充实", score: 1, icon: "🌱" },
+      { text: "有一些进步，但感觉还是不够快", score: 2, icon: "📈" },
+      { text: "好像在原地踏步，有种停滞感", score: 4, icon: "⏸️" },
+      { text: "完全停滞，甚至有退步的感觉", score: 5, icon: "📉" },
+      { text: "我不太在乎成长这件事", score: 2, icon: "🛋️" },
+    ]
+  },
+  {
+    phase: 2, phaseName: "💭 内心渴望", phaseColor: "green",
+    dim: "梦想探索", dimKey: "dream",
+    q: "如果完全不考虑现实，你最想过什么生活？",
+    scenario: "",
+    options: [
+      { text: "时间自由，自己安排每一天", score: 5, icon: "⏰" },
+      { text: "收入没有天花板，越努力越富有", score: 4, icon: "📈" },
+      { text: "帮助很多人，同时被需要", score: 4, icon: "🌍" },
+      { text: "有自己的团队，做一番事业", score: 4, icon: "🚀" },
+      { text: "有安全感，能守护好家人", score: 3, icon: "🏠" },
+      { text: "想不出什么特别的，就这样吧", score: 1, icon: "🤷" },
+    ]
+  },
+  {
+    phase: 2, phaseName: "💭 内心渴望", phaseColor: "green",
+    dim: "助人之心", dimKey: "helping",
+    q: "看到别人遇到困难，你通常会怎么做？",
+    scenario: "",
+    options: [
+      { text: "主动伸出援手，而且帮完很满足", score: 1, icon: "🤝" },
+      { text: "有时候想帮，但不知道怎么做", score: 2, icon: "🤔" },
+      { text: "看看就好，首先得顾好自己", score: 3, icon: "😐" },
+      { text: "帮了也未必有用，我觉得这不现实", score: 4, icon: "😔" },
+      { text: "我身边没有需要我帮助的人", score: 2, icon: "👀" },
+    ]
+  },
+  {
+    phase: 2, phaseName: "💭 内心渴望", phaseColor: "green",
+    dim: "影响力", dimKey: "influence",
+    q: "你希望别人怎么记住你？",
+    scenario: "这个问题没有对错，只关乎你内心真正在乎什么。",
+    options: [
+      { text: "一个帮过很多人的人", score: 1, icon: "🌟" },
+      { text: "一个值得信任的专业人士", score: 1, icon: "💎" },
+      { text: "一个有影响力、能带动别人的人", score: 2, icon: "🔱" },
+      { text: "一个有钱 or 有地位的人", score: 3, icon: "👑" },
+      { text: "我没想过这个问题", score: 4, icon: "❓" },
+    ]
+  },
+  {
+    phase: 2, phaseName: "💭 内心渴望", phaseColor: "green",
+    dim: "冒险精神", dimKey: "risk",
+    q: "为了一个不确定的结果，你愿意冒险尝试吗？",
+    scenario: "想象一个机会：成功率50%，赢了大幅改变人生，输了从头再来……",
+    options: [
+      { text: "愿意搏一搏，我对自己的能力有信心", score: 5, icon: "🎲" },
+      { text: "要看代价多大，风险可控的话愿意", score: 4, icon: "🤔" },
+      { text: "要看时机，现在可能不是最好的时候", score: 3, icon: "⏳" },
+      { text: "尽量规避风险，我不想承受大的失败", score: 2, icon: "🛡️" },
+      { text: "我宁愿选择稳定可靠的路径", score: 1, icon: "🏠" },
+    ]
+  },
+  {
+    phase: 2, phaseName: "💭 内心渴望", phaseColor: "green",
+    dim: "家庭平衡", dimKey: "family",
+    q: "你的工作，和你想要的家庭生活，能平衡吗？",
+    scenario: "",
+    options: [
+      { text: "很好，工作和家庭都照顾到了", score: 1, icon: "⚖️" },
+      { text: "基本可以，偶尔有冲突", score: 2, icon: "😐" },
+      { text: "不太行，工作牺牲了很多家庭时间", score: 4, icon: "😕" },
+      { text: "完全失衡，家人已经很有意见了", score: 5, icon: "😣" },
+      { text: "我没有这方面的压力", score: 2, icon: "👌" },
+    ]
+  },
+  /* ========= PHASE 3: 销售潜质 (6) ========= */
+  {
+    phase: 3, phaseName: "🔥 销售潜质", phaseColor: "purple",
+    dim: "说服力", dimKey: "persuade",
+    q: "朋友纠结要不要买一件东西，你会怎么做？",
+    scenario: "朋友：\"看好了一款保险，但我还在犹豫……\"",
+    options: [
+      { text: "帮他分析利弊，给出我的建议，让他自己做决定", score: 1, icon: "🧠" },
+      { text: "分享我的真实体验，让他参考", score: 2, icon: "💬" },
+      { text: "给他讲个故事或者案例，帮助他理解价值", score: 3, icon: "📖" },
+      { text: "鼓励他买，因为我觉得这东西真的好", score: 3, icon: "🔥" },
+      { text: "随便他，我不干涉别人的决定", score: 1, icon: "🚶" },
+    ]
+  },
+  {
+    phase: 3, phaseName: "🔥 销售潜质", phaseColor: "purple",
+    dim: "抗拒绝", dimKey: "rejection",
+    q: "你向别人提要求被拒绝了，你通常会？",
+    scenario: "",
+    options: [
+      { text: "换个方式再试一次，或者换个人试试", score: 5, icon: "🔄" },
+      { text: "理解对方的顾虑，但会再沟通一次", score: 4, icon: "🤝" },
+      { text: "算了，反正也不是什么大事", score: 2, icon: "😐" },
+      { text: "会有点受伤，但会想是不是自己哪里做得不够", score: 3, icon: "💭" },
+      { text: "我一般不主动向别人提要求", score: 2, icon: "🛡️" },
+    ]
+  },
+  {
+    phase: 3, phaseName: "🔥 销售潜质", phaseColor: "purple",
+    dim: "目标感", dimKey: "goal",
+    q: "你有没有为过一个明确的目标，全力以赴过？",
+    scenario: "哪怕是：考试、考研、减肥、攒钱、拿下一个客户……",
+    options: [
+      { text: "有！为了目标拼命努力，那种感觉很好", score: 5, icon: "🏃" },
+      { text: "有过，但没有坚持到最后", score: 3, icon: "🏁" },
+      { text: "很少定明确目标，走一步看一步", score: 2, icon: "👣" },
+      { text: "我一直都有目标，在持续努力", score: 5, icon: "🎯" },
+      { text: "目标立了又倒，我对自己很没信心", score: 2, icon: "😔" },
+    ]
+  },
+  {
+    phase: 3, phaseName: "🔥 销售潜质", phaseColor: "purple",
+    dim: "客户同理", dimKey: "empathy",
+    q: "朋友找你倾诉烦恼，你最可能的反应是？",
+    scenario: "",
+    options: [
+      { text: "先倾听，然后帮他分析问题、给建议", score: 5, icon: "🧠" },
+      { text: "先安慰他，让他感受到被理解", score: 4, icon: "❤️" },
+      { text: "说说我的看法，告诉他类似的经历", score: 3, icon: "💬" },
+      { text: "听他说完，帮他分散注意力", score: 2, icon: "🌈" },
+      { text: "听不太下去，我会岔开话题", score: 1, icon: "🚶" },
+    ]
+  },
+  {
+    phase: 3, phaseName: "🔥 销售潜质", phaseColor: "purple",
+    dim: "社交自信", dimKey: "social",
+    q: "在一个全是陌生人的社交场合，你会？",
+    scenario: "",
+    options: [
+      { text: "主动搭话，找话题，很快就熟悉起来", score: 5, icon: "🔥" },
+      { text: "自然融入，不刻意但也不躲避", score: 3, icon: "🙂" },
+      { text: "先观察一会儿，再决定要不要参与", score: 2, icon: "👀" },
+      { text: "会有点紧张，尽量找认识的人待在一起", score: 1, icon: "😐" },
+      { text: "直接找个角落待着，不太想社交", score: 1, icon: "🌙" },
+    ]
+  },
+  {
+    phase: 3, phaseName: "🔥 销售潜质", phaseColor: "purple",
+    dim: "自我驱动", dimKey: "drive",
+    q: "没有人盯着你、没有硬性要求的时候，你会主动做什么？",
+    scenario: "",
+    options: [
+      { text: "主动规划学习、提升自己", score: 5, icon: "📚" },
+      { text: "会把该做的事情做完，但不会多做", score: 2, icon: "📋" },
+      { text: "想学点什么，但总被其他事情打断", score: 3, icon: "⏰" },
+      { text: "放松休息，反正没人管", score: 1, icon: "🛋️" },
+      { text: "我会列计划，但总是拖延……", score: 2, icon: "📝" },
+    ]
+  },
+];
+/* ===== Trait Mapping ===== */
+const TRAITS = [
+  { keys: ["pressure","rejection"], emoji: "💪", name: "抗挫力强", desc: "能扛住拒绝，越挫越勇" },
+  { keys: ["social","persuade"], emoji: "🗣️", name: "沟通达人", desc: "善于表达，影响他人" },
+  { keys: ["dream","goal","drive"], emoji: "🎯", name: "目标导向", desc: "有野心，有冲劲" },
+  { keys: ["helping","empathy","influence"], emoji: "❤️", name: "助人之心", desc: "乐于助人，有感染力" },
+];
+
+/* ===== State ===== */
+var currentQ = 0;
+var answers = [];
+
+/* ===== Welcome to Questions ===== */
+function startTest() {
+  currentQ = 0;
+  answers = [];
+  showScreen('question');
+  renderQuestion();
+}
+
+/* ===== Render Question ===== */
+function renderQuestion() {
+  var q = QUESTIONS[currentQ];
+  var total = QUESTIONS.length;
+
+  var phaseColors = { 1: "", 2: "green", 3: "purple" };
+  var phaseNames = { 1: "当前：现状觉察", 2: "当前：内心渴望", 3: "当前：销售潜质" };
+  document.getElementById('phase-indicator').textContent = phaseNames[q.phase];
+
+  document.getElementById('dim-label').textContent = q.dim;
+  document.getElementById('progress-pct').textContent = (currentQ + 1) + " / " + total;
+  document.getElementById('progress-fill').style.width = (currentQ / (total - 1)) * 100 + '%';
+
+  var dimTag = document.getElementById('dim-tag');
+  dimTag.textContent = q.dim;
+  dimTag.className = 'question-dim-tag ' + (phaseColors[q.phase] || '');
+  document.getElementById('q-num').textContent = '第 ' + (currentQ + 1) + ' 题';
+
+  document.getElementById('q-text').textContent = q.q;
+
+  var scenarioEl = document.getElementById('q-scenario');
+  var scenarioText = document.getElementById('scenario-text');
+  if (q.scenario) {
+    scenarioText.textContent = q.scenario;
+    scenarioEl.style.display = 'flex';
+  } else {
+    scenarioEl.style.display = 'none';
+  }
+
+  var optList = document.getElementById('option-list');
+  optList.innerHTML = '';
+  for (var i = 0; i < q.options.length; i++) {
+    var opt = q.options[i];
+    var btn = document.createElement('button');
+    btn.className = 'option-btn' + ((answers[currentQ] === i) ? ' selected' : '');
+    btn.innerHTML = '<span class="opt-icon"><span>' + opt.icon + '</span></span><span>' + opt.text + '</span>';
+    (function(idx) {
+      btn.onclick = function() { selectOpt(idx); };
+    })(i);
+    optList.appendChild(btn);
+  }
+
+  document.getElementById('btn-prev').style.display = currentQ > 0 ? 'block' : 'none';
+  var nextBtn = document.getElementById('btn-next');
+  nextBtn.disabled = (answers[currentQ] === undefined);
+  nextBtn.textContent = (currentQ === total - 1) ? '🔮 查看我的结果' : '下一题 →';
+}
+
+/* ===== Select Option ===== */
+function selectOpt(idx) {
+  answers[currentQ] = idx;
+  var opts = document.querySelectorAll('.option-btn');
+  for (var i = 0; i < opts.length; i++) {
+    opts[i].classList.toggle('selected', i === idx);
+  }
+  document.getElementById('btn-next').disabled = false;
+}
+
+/* ===== Navigation ===== */
+function nextQ() {
+  if (answers[currentQ] === undefined) return;
+  if (currentQ < QUESTIONS.length - 1) {
+    currentQ++;
+    renderQuestion();
+    window.scrollTo(0, 0);
+  } else {
+    showResult();
+  }
+}
+
+function prevQ() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQuestion();
+    window.scrollTo(0, 0);
+  }
+}
+/* ===== Show Result ===== */
+function showResult() {
+  showScreen('result');
+
+  var dimScores = [];
+  for (var i = 0; i < QUESTIONS.length; i++) {
+    var q = QUESTIONS[i];
+    var ansIdx = answers[i];
+    var sc = q.options[ansIdx].score;
+    dimScores.push({ key: q.dimKey, dim: q.dim, phase: q.phase, score: sc });
+  }
+
+  var maxScore = QUESTIONS.length * 5;
+  var totalScore = 0;
+  for (var j = 0; j < dimScores.length; j++) { totalScore += dimScores[j].score; }
+  var pct = Math.round((totalScore / maxScore) * 100);
+
+  /* Animate ring */
+  setTimeout(function() {
+    var ring = document.getElementById('score-circle');
+    var circumference = 2 * Math.PI * 55;
+    ring.style.strokeDasharray = circumference;
+    ring.style.strokeDashoffset = circumference - (circumference * pct / 100);
+    var count = 0;
+    var step = pct / (1200 / 16);
+    var timer = setInterval(function() {
+      count += step;
+      if (count >= pct) {
+        count = pct;
+        clearInterval(timer);
+      }
+      document.getElementById('score-num').textContent = Math.round(count);
+    }, 16);
+  }, 300);
+
+  /* Result title */
+  var titleEl = document.getElementById('result-title');
+  var descEl  = document.getElementById('result-desc');
+  if (pct >= 75) {
+    titleEl.textContent = "🔥 你非常适合这条路";
+    descEl.textContent = "你在多个维度上都表现出对自主、成长和意义感的强烈渴望——而且，你具备销售创业的核心潜质。建议认真了解这一步。";
+  } else if (pct >= 55) {
+    titleEl.textContent = "🌱 你有一定的适配潜力";
+    descEl.textContent = "你对现状有思考，也隐约有自己想要的生活。轻资产创业可能是一个值得认真了解的方向，关键在于你想改变的那部分有多强烈。";
+  } else if (pct >= 35) {
+    titleEl.textContent = "🧭 可以先多了解一下";
+    descEl.textContent = "你目前的状态还不错，但也正因如此——未来的选择权，其实掌握在你自己手里。先了解清楚，再做决定也不迟。";
+  } else {
+    titleEl.textContent = "🚶 先把自己的路走稳";
+    descEl.textContent = "你现在的状态比较稳定，不必急着改变。如果未来有想法，随时欢迎回来聊聊。祝你一切顺利！";
+  }
+
+  /* Trait cards */
+  var traitGrid = document.getElementById('trait-grid');
+  traitGrid.innerHTML = '';
+  var matched = [];
+  for (var t = 0; t < TRAITS.length; t++) {
+    var trait = TRAITS[t];
+    var hasHigh = false;
+    for (var k = 0; k < trait.keys.length; k++) {
+      for (var d = 0; d < dimScores.length; d++) {
+        if (dimScores[d].key === trait.keys[k] && dimScores[d].score >= 4) {
+          hasHigh = true;
+        }
+      }
+    }
+    if (hasHigh) matched.push(trait);
+  }
+  var showTraits = matched.length > 0 ? matched : TRAITS.slice(0, 4);
+  for (var m = 0; m < showTraits.length; m++) {
+    var t2 = showTraits[m];
+    var card = document.createElement('div');
+    card.className = 'trait-card';
+    card.innerHTML = '<span class="trait-emoji">' + t2.emoji + '</span>'
+      + '<div class="trait-name">' + t2.name + '</div>'
+      + '<div class="trait-desc">' + t2.desc + '</div>';
+    traitGrid.appendChild(card);
+  }
+
+  /* Merge same dim & pick top 6 for radar */
+  var merged = {};
+  for (var i = 0; i < dimScores.length; i++) {
+    var ds = dimScores[i];
+    if (!merged[ds.dim]) merged[ds.dim] = { key: ds.key, dim: ds.dim, total: 0, count: 0 };
+    merged[ds.dim].total += ds.score;
+    merged[ds.dim].count++;
+  }
+  var radarDims = [];
+  for (var k in merged) {
+    radarDims.push({ key: merged[k].key, dim: merged[k].dim, score: Math.round(merged[k].total / merged[k].count * 10) / 10 });
+  }
+  radarDims.sort(function(a, b) { return b.score - a.score; });
+  radarDims = radarDims.slice(0, 6);
+
+  /* Radar chart */
+  document.getElementById('radar-container').innerHTML = buildRadarSVG(radarDims);
+
+  /* Store for share card */
+  window._shareData = { dimScores: radarDims, pct: pct, title: titleEl.textContent };
+
+  /* Advice */
+  var strongOnes = [];
+  var weakOnes = [];
+  for (var s = 0; s < dimScores.length; s++) {
+    if (dimScores[s].score >= 4) strongOnes.push(dimScores[s]);
+    if (dimScores[s].score <= 2) weakOnes.push(dimScores[s]);
+  }
+  var adviceText = '';
+  if (strongOnes.length >= 3) {
+    var names = [];
+    for (var n = 0; n < Math.min(strongOnes.length, 3); n++) { names.push(strongOnes[n].dim); }
+    adviceText = '<p style="font-size:14px;color:var(--brown-light);line-height:1.7">'
+      + '你的优势在于 <strong style="color:var(--orange-600)">' + names.join('、') + '</strong>。'
+      + '这些特质在轻资产创业中非常关键——建议找到能发挥这些优势的场景。</p>';
+  } else if (weakOnes.length >= 3) {
+    var names2 = [];
+    for (var n2 = 0; n2 < Math.min(weakOnes.length, 2); n2++) { names2.push(weakOnes[n2].dim); }
+    adviceText = '<p style="font-size:14px;color:var(--brown-light);line-height:1.7">'
+      + '你目前对 <strong style="color:var(--orange-600)">' + names2.join('和') + '</strong> 的感受相对积极。'
+      + '如果想走这条路，可以重点关注——你需要做出哪些改变，才能让自己走得更稳。</p>';
+  } else {
+    adviceText = '<p style="font-size:14px;color:var(--brown-light);line-height:1.7">'
+      + '你的状态比较均衡，有一定的潜力，但也还需要更清晰地认识自己想要什么。'
+      + '建议预约一次面谈，深入聊聊你的想法。</p>';
+  }
+  document.getElementById('advice-text').innerHTML = adviceText;
+
+  window.scrollTo(0, 0);
+}
+
+
+/* ===== Build Radar SVG ===== */
+function buildRadarSVG(dims) {
+  var N = dims.length;
+  var cx = 180, cy = 180, R = 110;
+  var angles = [];
+  for (var i = 0; i < N; i++) {
+    angles.push(i * 2 * Math.PI / N - Math.PI / 2);
+  }
+  var s = '';
+  // Grid 5 levels
+  for (var lv = 1; lv <= 5; lv++) {
+    var r = R * lv / 5;
+    var pts = [];
+    for (var i = 0; i < N; i++) {
+      pts.push((cx + r * Math.cos(angles[i])).toFixed(1) + ',' + (cy + r * Math.sin(angles[i])).toFixed(1));
+    }
+    s += '<polygon points="' + pts.join(' ') + '" fill="' + (lv === 5 ? 'rgba(255,154,66,0.06)' : 'none') + '" stroke="#FFD4A3" stroke-width="' + (lv === 5 ? '1.2' : '0.7') + '"/>';
+  }
+  // Axes
+  for (var i = 0; i < N; i++) {
+    s += '<line x1="' + cx + '" y1="' + cy + '" x2="' + (cx + R * Math.cos(angles[i])).toFixed(1) + '" y2="' + (cy + R * Math.sin(angles[i])).toFixed(1) + '" stroke="#FFD4A3" stroke-width="1"/>';
+  }
+  // Data polygon
+  var pts2 = [];
+  for (var i = 0; i < N; i++) {
+    var r2 = R * dims[i].score / 5;
+    pts2.push((cx + r2 * Math.cos(angles[i])).toFixed(1) + ',' + (cy + r2 * Math.sin(angles[i])).toFixed(1));
+  }
+  s += '<polygon points="' + pts2.join(' ') + '" fill="rgba(255,122,26,0.28)" stroke="#FF7A1A" stroke-width="2.5" stroke-linejoin="round"/>';
+  // Dots
+  for (var i = 0; i < N; i++) {
+    var rd = R * dims[i].score / 5;
+    var xd = (cx + rd * Math.cos(angles[i])).toFixed(1);
+    var yd = (cy + rd * Math.sin(angles[i])).toFixed(1);
+    s += '<circle cx="' + xd + '" cy="' + yd + '" r="5" fill="#FF7A1A" stroke="white" stroke-width="2.5"/>';
+  }
+  // Labels — 增加偏移距离避免与轴线重叠
+  for (var i = 0; i < N; i++) {
+    var lr = R + 42;
+    var xl = (cx + lr * Math.cos(angles[i]));
+    var yl = (cy + lr * Math.sin(angles[i]));
+    var anchor = Math.abs(Math.cos(angles[i])) < 0.2 ? 'middle' : (Math.cos(angles[i]) < 0 ? 'end' : 'start');
+    var nm = dims[i].dim.length > 5 ? dims[i].dim.slice(0,5) : dims[i].dim;
+    s += '<text x="' + xl.toFixed(1) + '" y="' + (yl - 7).toFixed(1) + '" text-anchor="' + anchor + '" dominant-baseline="middle" font-size="11" fill="#3D2B1F" font-weight="600" font-family="PingFang SC,sans-serif">' + nm + '</text>';
+    s += '<text x="' + xl.toFixed(1) + '" y="' + (yl + 9).toFixed(1) + '" text-anchor="' + anchor + '" dominant-baseline="middle" font-size="9.5" fill="#E86510" font-weight="700" font-family="PingFang SC,sans-serif">' + dims[i].score + '/5</text>';
+  }
+  return '<svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:340px;display:block;margin:8px auto">' + s + '</svg>';
+}
+
+/* ===== Show Share Card ===== */
+function showShareCard() {
+  var modal = document.getElementById('share-modal');
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  var qrDiv = document.getElementById('qr-holder');
+  qrDiv.innerHTML = '';
+  var testUrl = window.location.href.split('?')[0];
+  if (typeof QRCode !== 'undefined') {
+    new QRCode(qrDiv, {
+      text: testUrl,
+      width: 160,
+      height: 160,
+      colorDark: '#3D2B1F',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  }
+  setTimeout(function() { drawShareCanvas(); }, 600);
+}
+
+function closeShareModal(evt) {
+  if (evt && evt.target !== document.getElementById('share-modal')) return;
+  document.getElementById('share-modal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+/* ===== Draw Share Canvas ===== */
+function drawShareCanvas() {
+  var canvas = document.getElementById('share-canvas');
+  var ctx = canvas.getContext('2d');
+  var W = 540, H = 990;
+  canvas.width = W;
+  canvas.height = H;
+
+  var sd = window._shareData || { dimScores: [], pct: 0, title: '' };
+  var dims = sd.dimScores;
+  var pct = sd.pct;
+  var titleText = sd.title;
+
+  /* Background */
+  ctx.fillStyle = '#FFF8F2';
+  ctx.fillRect(0, 0, W, H);
+
+  /* Header gradient */
+  var g1 = ctx.createLinearGradient(0, 0, W, 200);
+  g1.addColorStop(0, '#FF9A42');
+  g1.addColorStop(1, '#D95A00');
+  ctx.fillStyle = g1;
+  ctx.beginPath();
+  ctx.moveTo(0, 0); ctx.lineTo(W, 0); ctx.lineTo(W, 170);
+  ctx.quadraticCurveTo(W / 2, 215, 0, 170);
+  ctx.closePath();
+  ctx.fill();
+
+  /* Header text */
+  ctx.fillStyle = 'rgba(255,255,255,0.75)';
+  ctx.font = '500 15px "PingFang SC",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('轻资产创业自测', W / 2, 48);
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 30px "PingFang SC",sans-serif';
+  ctx.fillText('我的人生规划适配报告', W / 2, 90);
+  ctx.fillStyle = 'rgba(255,255,255,0.85)';
+  ctx.font = '16px "PingFang SC",sans-serif';
+  ctx.fillText('18 题全维度评估 · 人生规划洞察', W / 2, 124);
+
+  /* Score ring */
+  var scx = W / 2, scy = 265, sR = 65;
+  // Outer glow
+  ctx.beginPath();
+  ctx.arc(scx, scy, sR + 14, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(255,154,66,0.08)';
+  ctx.fill();
+  // Background ring
+  ctx.beginPath();
+  ctx.arc(scx, scy, sR, 0, Math.PI * 2);
+  ctx.strokeStyle = '#FFE8CC';
+  ctx.lineWidth = 13;
+  ctx.stroke();
+  // Score arc
+  ctx.beginPath();
+  ctx.arc(scx, scy, sR, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct / 100);
+  var g2 = ctx.createLinearGradient(scx - sR, scy, scx + sR, scy);
+  g2.addColorStop(0, '#FF9A42');
+  g2.addColorStop(1, '#E86510');
+  ctx.strokeStyle = g2;
+  ctx.lineWidth = 13;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+  // Score number
+  ctx.fillStyle = '#3D2B1F';
+  ctx.font = 'bold 46px "PingFang SC",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(pct, scx, scy + 14);
+  ctx.fillStyle = '#6B4F3A';
+  ctx.font = '13px "PingFang SC",sans-serif';
+  ctx.fillText('适配指数', scx, scy + 38);
+
+  /* Result title */
+  ctx.fillStyle = '#3D2B1F';
+  ctx.font = 'bold 22px "PingFang SC",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(titleText, W / 2, 348);
+
+  /* Divider */
+  ctx.strokeStyle = '#FFE8CC';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(60, 368); ctx.lineTo(W - 60, 368);
+  ctx.stroke();
+
+  /* Section label */
+  ctx.fillStyle = '#6B4F3A';
+  ctx.font = 'bold 13px "PingFang SC",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('六维适配雷达图', W / 2, 375);
+
+  /* Radar chart on canvas */
+  if (dims.length > 0) drawRadarOnCanvas(ctx, dims, W / 2, 555, 130);
+
+  /* Trait tags */
+  var traitTags = [];
+  for (var t = 0; t < TRAITS.length; t++) {
+    var tr = TRAITS[t];
+    var hit = false;
+    for (var k = 0; k < tr.keys.length && !hit; k++) {
+      for (var d = 0; d < dims.length && !hit; d++) {
+        if (dims[d].key === tr.keys[k] && dims[d].score >= 4) hit = true;
+      }
+    }
+    if (hit) traitTags.push(tr.emoji + ' ' + tr.name);
+  }
+  if (traitTags.length === 0) {
+    traitTags = [TRAITS[0].emoji + ' ' + TRAITS[0].name, TRAITS[1].emoji + ' ' + TRAITS[1].name];
+  }
+  ctx.font = '14px "PingFang SC",sans-serif';
+  var tagY = 745;
+  var totalTagW = 0;
+  for (var tt = 0; tt < traitTags.length; tt++) totalTagW += ctx.measureText(traitTags[tt]).width + 28;
+  var tagX = (W - totalTagW - (traitTags.length - 1) * 8) / 2;
+  for (var tt = 0; tt < traitTags.length; tt++) {
+    var tw = ctx.measureText(traitTags[tt]).width + 28;
+    ctx.fillStyle = '#FFF0E0';
+    ctx.beginPath();
+    ctx.roundRect(tagX, tagY, tw, 34, 17);
+    ctx.fill();
+    ctx.strokeStyle = '#FFD4A3';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.fillStyle = '#E86510';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(traitTags[tt], tagX + 14, tagY + 17);
+    tagX += tw + 8;
+  }
+  ctx.textBaseline = 'alphabetic';
+
+  /* QR code */
+  var qrDiv = document.getElementById('qr-holder');
+  var qrImg = qrDiv.querySelector('img') || qrDiv.querySelector('canvas');
+  if (qrImg) {
+    var qrSize = 130;
+    var qrX = W / 2 - qrSize / 2;
+    var qrY = 790;
+    // QR background
+    ctx.fillStyle = '#fff';
+    ctx.shadowColor = 'rgba(0,0,0,0.1)';
+    ctx.shadowBlur = 12;
+    ctx.beginPath();
+    ctx.roundRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20, 14);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+    ctx.fillStyle = '#6B4F3A';
+    ctx.font = '13px "PingFang SC",sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('扫码参与测试', W / 2, qrY + qrSize + 26);
+  } else {
+    ctx.fillStyle = '#aaa';
+    ctx.font = '13px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('（需网络生成二维码）', W / 2, 830);
+  }
+
+  /* Footer */
+  ctx.fillStyle = '#C8A882';
+  ctx.font = '12px "PingFang SC",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('复星保德信人寿 · 轻资产创业 · 仅供职业方向参考', W / 2, 960);
+}
+
+/* ===== Radar on Canvas helper ===== */
+function drawRadarOnCanvas(ctx, dims, cx, cy, R) {
+  var N = dims.length;
+  var angles = [];
+  for (var i = 0; i < N; i++) angles.push(i * 2 * Math.PI / N - Math.PI / 2);
+
+  // Grid
+  for (var lv = 1; lv <= 5; lv++) {
+    var r = R * lv / 5;
+    ctx.beginPath();
+    for (var i = 0; i < N; i++) {
+      var x = cx + r * Math.cos(angles[i]);
+      var y = cy + r * Math.sin(angles[i]);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = lv === 5 ? '#FFD4A3' : 'rgba(255,212,163,0.5)';
+    ctx.lineWidth = lv === 5 ? 1.2 : 0.6;
+    ctx.stroke();
+    if (lv === 5) { ctx.fillStyle = 'rgba(255,154,66,0.05)'; ctx.fill(); }
+  }
+  // Axes
+  ctx.strokeStyle = '#FFD4A3';
+  ctx.lineWidth = 0.8;
+  for (var i = 0; i < N; i++) {
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + R * Math.cos(angles[i]), cy + R * Math.sin(angles[i]));
+    ctx.stroke();
+  }
+  // Data polygon
+  ctx.beginPath();
+  for (var i = 0; i < N; i++) {
+    var rd = R * dims[i].score / 5;
+    var x = cx + rd * Math.cos(angles[i]);
+    var y = cy + rd * Math.sin(angles[i]);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(255,122,26,0.28)';
+  ctx.fill();
+  ctx.strokeStyle = '#FF7A1A';
+  ctx.lineWidth = 2.5;
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+  // Dots
+  for (var i = 0; i < N; i++) {
+    var rd2 = R * dims[i].score / 5;
+    var xd = cx + rd2 * Math.cos(angles[i]);
+    var yd = cy + rd2 * Math.sin(angles[i]);
+    ctx.beginPath();
+    ctx.arc(xd, yd, 5, 0, Math.PI * 2);
+    ctx.fillStyle = '#FF7A1A';
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+  }
+  // Labels
+  ctx.textAlign = 'center';
+  for (var i = 0; i < N; i++) {
+    var lr = R + 40;
+    var xl = cx + lr * Math.cos(angles[i]);
+    var yl = cy + lr * Math.sin(angles[i]);
+    var nm = dims[i].dim.length > 5 ? dims[i].dim.slice(0,5) : dims[i].dim;
+    ctx.fillStyle = '#3D2B1F';
+    ctx.font = 'bold 13px "PingFang SC",sans-serif';
+    ctx.textAlign = Math.abs(Math.cos(angles[i])) < 0.2 ? 'center' : (Math.cos(angles[i]) < 0 ? 'right' : 'left');
+    ctx.fillText(nm, xl, yl - 6);
+    ctx.fillStyle = '#E86510';
+    ctx.font = '11px "PingFang SC",sans-serif';
+    ctx.fillText(dims[i].score + '/5', xl, yl + 10);
+  }
+}
+
+/* ===== Download Share Image ===== */
+function downloadShareImg() {
+  var canvas = document.getElementById('share-canvas');
+  var link = document.createElement('a');
+  link.download = '我的适配测评报告.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+/* ===== Retake ===== */
+function retake() {
+  answers = [];
+  currentQ = 0;
+  var ring2 = document.getElementById('score-circle');
+  ring2.style.strokeDasharray = '345';
+  ring2.style.strokeDashoffset = '345';
+  document.getElementById('score-num').textContent = '0';
+  // Reset booking form
+  document.getElementById('booking-form').style.display = 'flex';
+  document.getElementById('booking-success').classList.remove('active');
+  document.getElementById('booking-name').value = '';
+  document.getElementById('booking-phone').value = '';
+  showScreen('welcome');
+  window.scrollTo(0, 0);
+}
+
+/* ===== Booking Submit ===== */
+function submitBooking() {
+  var name = document.getElementById('booking-name').value.trim();
+  var phone = document.getElementById('booking-phone').value.trim();
+
+  if (!name) { alert('请输入您的姓名'); return; }
+  if (!phone || !/^1[3-9]\d{9}$/.test(phone)) { alert('请输入正确的11位手机号'); return; }
+
+  // Store locally (for admin review)
+  var bookings = JSON.parse(localStorage.getItem('fp_bookings') || '[]');
+  bookings.push({
+    name: name,
+    phone: phone,
+    time: new Date().toLocaleString('zh-CN'),
+    url: window.location.href
+  });
+  localStorage.setItem('fp_bookings', JSON.stringify(bookings));
+
+  // Show success
+  document.getElementById('booking-form').style.display = 'none';
+  document.getElementById('booking-success').classList.add('active');
+}
+
+/* ===== Screen Switch ===== */
+function showScreen(name) {
+  var screens = document.querySelectorAll('.screen');
+  for (var i = 0; i < screens.length; i++) { screens[i].classList.remove('active'); }
+  if (name === 'question') {
+    document.getElementById('screen-question').classList.add('active');
+  } else if (name === 'result') {
+    document.getElementById('screen-result').classList.add('active');
+  } else {
+    document.getElementById('screen-welcome').classList.add('active');
+  }
+}
+</script>
+
+<!-- ===== Share Modal ===== -->
+<div id="share-modal" class="share-modal" onclick="closeShareModal(event)">
+  <div class="share-modal-box" onclick="event.stopPropagation()">
+    <div class="share-canvas-wrap">
+      <canvas id="share-canvas"></canvas>
+    </div>
+    <div class="share-hint">📱 长按图片可保存，或点击下方按鈕下载</div>
+    <div class="share-actions">
+      <button class="btn-download" onclick="downloadShareImg()">⬇️ 保存图片</button>
+      <button class="btn-close-modal" onclick="closeShareModal()">✕ 关闭</button>
+    </div>
+  </div>
+</div>
+<!-- hidden QR holder -->
+<div id="qr-holder" style="position:absolute;left:-9999px;top:0;width:160px;height:160px;"></div>
+</body>
+</html>
